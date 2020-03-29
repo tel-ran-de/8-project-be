@@ -128,7 +128,7 @@ public class CustomerControllerTest {
     public void testAddShipment() throws Exception {
         Shipment shipmentEntity = new Shipment(
                 null,
-                " Sony TV",
+                "Sony TV",
                 7L,
                 null);
         Shipment savedShipmentEntity = new Shipment(
@@ -145,7 +145,7 @@ public class CustomerControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.shipmentId").value("5"))
                 .andExpect(jsonPath("$.description").value("Sony TV"))
-                .andExpect(jsonPath("$.customerId").value("3"));
+                .andExpect(jsonPath("$.customerId").value("7"));
 
         verify(service, times(1)).addShipment(shipmentEntity);
     }

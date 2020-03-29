@@ -3,27 +3,27 @@ CREATE SCHEMA tracking_service;
 USE tracking_service;
 
 CREATE TABLE Customer (
-  customer_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(45) NOT NULL,
-  PRIMARY KEY  (customer_id)
+                          customer_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                          name VARCHAR(45) NOT NULL,
+                          PRIMARY KEY  (customer_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE Shipment (
-  shipment_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  description VARCHAR(90) NOT NULL,
-  customer_id SMALLINT UNSIGNED,
-  PRIMARY KEY  (shipment_id),
-  FOREIGN KEY (customer_id) REFERENCES Customer (customer_id) ON DELETE CASCADE
+                          shipment_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                          description VARCHAR(90) NOT NULL,
+                          customer_id SMALLINT UNSIGNED,
+                          PRIMARY KEY  (shipment_id),
+                          FOREIGN KEY (customer_id) REFERENCES Customer (customer_id) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE Tracking (
-tracking_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-status ENUM ('initiated','in progress','delivered','cancelled','returned') NOT NULL ,
-shipment_id SMALLINT UNSIGNED,
-PRIMARY KEY (tracking_id),
-FOREIGN KEY (shipment_id) REFERENCES Shipment (shipment_id) ON DELETE CASCADE
+                          tracking_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                          status ENUM ('initiated','in progress','delivered','cancelled','returned') NOT NULL ,
+                          shipment_id SMALLINT UNSIGNED,
+                          PRIMARY KEY (tracking_id),
+                          FOREIGN KEY (shipment_id) REFERENCES Shipment (shipment_id) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -48,7 +48,7 @@ VALUES (1, 'TP-Link AC1350 Powerline Adapter',1),
 
 
 
-INSERT INTO Tracking (tracking_id, status,shipmentid)
+INSERT INTO Tracking (tracking_id, status,shipment_id)
 VALUES (1, 'initiated',2),
        (2, 'cancelled',4),
        (3, 'delivered',1),
@@ -56,5 +56,4 @@ VALUES (1, 'initiated',2),
        (5, 'cancelled',7),
        (6, 'delivered',5),
        (7, 'in progress',6);
-
 

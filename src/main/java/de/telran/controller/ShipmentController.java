@@ -34,8 +34,8 @@ public class ShipmentController {
         return modelMapper.map(service.addTracking(trackingEntity), TrackingDTO.class);
     }
 
-    @GetMapping("/api/shipments/{id}/trackings")
+   /* @GetMapping("/api/shipments/{id}/trackings")
     TrackingDTO getTrackingByShipmentId(@PathVariable long id) {
         return modelMapper.map(service.getTrackingByShipmentId(id), TrackingDTO.class);
-    }
+    }*/
 }

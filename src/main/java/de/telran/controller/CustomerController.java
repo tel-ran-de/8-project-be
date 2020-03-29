@@ -1,9 +1,11 @@
 package de.telran.controller;
 
+
 import de.telran.dto.CustomerDTO;
 import de.telran.dto.ShipmentDTO;
 import de.telran.entity.Customer;
 import de.telran.entity.Shipment;
+import de.telran.exception.CustomerNotFoundException;
 import de.telran.service.TrackingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,13 @@ public class CustomerController {
         return service.getAllCustomers();
     }
 
+    @GetMapping("/api/customers/{id}")
+    CustomerDTO getCustomerById(@PathVariable long id){
+       return modelMapper.map(service.getCustomerByCustomerId(id),CustomerDTO.class);
+
+
+    }
+
 
     @PostMapping("/api/customers")
     CustomerDTO addCustomer(@RequestBody CustomerDTO customer) {
@@ -48,7 +57,7 @@ public class CustomerController {
 
 
     @PostMapping("/api/customers/{id}/shipments")
-    ShipmentDTO addShipment(@RequestBody ShipmentDTO shipment, @PathVariable long id) {
+    ShipmentDTO addShipment(@RequestBody ShipmentDTO shipment, @PathVariable long id) throws CustomerNotFoundException {
         Shipment shipmentEntity =
                 new Shipment(shipment.getShipmentId(), shipment.getDescription(), id, null);
         return modelMapper.map(service.addShipment(shipmentEntity), ShipmentDTO.class);
