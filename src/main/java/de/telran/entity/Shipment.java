@@ -4,22 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Entity(name = "Shipment")
+@Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Shipment")
+@Table(name = "shipment")
 public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long shipmentId;
+    private Long id;
     private String description;
 
     @Column(name = "customer_id")

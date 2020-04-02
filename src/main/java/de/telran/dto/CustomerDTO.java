@@ -1,6 +1,5 @@
 package de.telran.dto;
 
-import de.telran.entity.Shipment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
