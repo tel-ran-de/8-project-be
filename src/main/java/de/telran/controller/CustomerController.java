@@ -1,11 +1,10 @@
 package de.telran.controller;
 
 
-import de.telran.dto.CustomerDTO;
+import de.telran.dto.CustomerDto;
 import de.telran.dto.ShipmentDTO;
 import de.telran.entity.Customer;
 import de.telran.entity.Shipment;
-import de.telran.exception.CustomerNotFoundException;
 import de.telran.service.TrackingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -37,21 +36,25 @@ public class CustomerController {
     }
 
     @GetMapping("/api/customers/{id}")
-    public CustomerDTO getCustomerById(@PathVariable long id){
-       return modelMapper.map(service.getCustomerByCustomerId(id), CustomerDTO.class);
+    public CustomerDto getCustomerById(@PathVariable long id){
+       return modelMapper.map(service.getCustomerByCustomerId(id), CustomerDto.class);
     }
 
     @PostMapping("/api/customers")
-    CustomerDTO addCustomer(@RequestBody CustomerDTO customer) {
-        Customer customerEntity = modelMapper.map(customer, Customer.class);
-        return modelMapper.map(service.addCustomer(customerEntity), CustomerDTO.class);
+    public Customer addCustomer(@RequestBody CustomerDto customer) {
+        return service.addCustomer(customer);
     }
 
-    @PostMapping("/api/customers/{id}/shipments")
-    ShipmentDTO addShipment(@RequestBody ShipmentDTO shipment, @PathVariable long id) throws CustomerNotFoundException {
-        Shipment shipmentEntity =
-                new Shipment(shipment.getShipmentId(), shipment.getDescription(), id, null);
-        return modelMapper.map(service.addShipment(shipmentEntity), ShipmentDTO.class);
+    @PostMapping("/api/customers/{customerId}/shipments")
+    public Shipment addShipment(@RequestBody ShipmentDTO shipmentDto, @PathVariable Long customerId) {
+        return service.addShipment(customerId, convertShipmentDtoToShipment(shipmentDto));
+    }
+
+    private Shipment convertShipmentDtoToShipment(ShipmentDTO shipmentDTO) {
+        Shipment shipment = new Shipment();
+        shipment.setDescription(shipmentDTO.getDescription());
+        shipment.setId(shipmentDTO.getId());
+        return  shipment;
     }
 
 }

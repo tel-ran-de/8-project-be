@@ -1,6 +1,6 @@
 package de.telran.service;
 
-
+import de.telran.dto.CustomerDto;
 import de.telran.entity.Customer;
 import de.telran.entity.Shipment;
 import de.telran.entity.Tracking;
@@ -8,14 +8,10 @@ import de.telran.exception.CustomerNotFoundException;
 import de.telran.repositiory.CustomerRepository;
 import de.telran.repositiory.ShipmentRepository;
 import de.telran.repositiory.TrackingRepositiory;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TrackingService {
@@ -34,19 +30,18 @@ public class TrackingService {
         this.trackingRepository = trackingRepository;
     }
 
-    public Customer addCustomer(Customer customer) {
+    public Customer addCustomer(CustomerDto customerChangeRequestDto) {
+        Customer customer = new Customer();
+        customer.setName(customerChangeRequestDto.getName());
         return customerRepository.save(customer);
     }
 
 
-    public Shipment addShipment(Shipment shipment)throws CustomerNotFoundException {
-        Shipment savedShipment;
-        try {savedShipment = shipmentRepository.save(shipment);}
-        catch (Exception  ex ){throw new CustomerNotFoundException();}
-        return savedShipment;
+    public Shipment addShipment(Long customerId, Shipment shipment) {
+        Customer customer = customerRepository.getById(customerId).orElseThrow(CustomerNotFoundException::new);
+        shipment.setCustomer(customer);
+        return shipmentRepository.save(shipment);
     }
-
-
 
     public Tracking addTracking(Tracking tracking) {
         return trackingRepository.save(tracking);

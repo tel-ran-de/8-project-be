@@ -1,6 +1,5 @@
 package de.telran.dto;
 
-import de.telran.entity.Tracking;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShipmentDTO {
+
     @Nullable
-    Long shipmentId;
-    String description;
-    Long customerId;
-    List<TrackingDTO> statusesDTO;
+    private Long id;
+    private String description;
+    private Long customerId;
+    private List<TrackingDTO> statusesDTO;
 }

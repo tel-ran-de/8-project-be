@@ -20,8 +20,9 @@ public class Shipment {
     private Long id;
     private String description;
 
-    @Column(name = "customer_id")
-    private Long customerId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @OneToMany(
             cascade = CascadeType.ALL,
