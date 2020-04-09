@@ -43,6 +43,12 @@ public class TrackingService {
         return shipmentRepository.save(shipment);
     }
 
+    public List<Shipment> getShipmentsByCustomerId(Long customerId) {
+        Customer customer = customerRepository.getById(customerId).orElseThrow(CustomerNotFoundException::new);
+        return shipmentRepository.findAllShipmentsByCustomerId(customerId);
+    }
+
+
     public Tracking addTracking(Tracking tracking) {
         return trackingRepository.save(tracking);
     }
