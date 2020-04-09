@@ -30,9 +30,15 @@ public class TrackingService {
         this.trackingRepository = trackingRepository;
     }
 
-    public Customer addCustomer(CustomerDto customerChangeRequestDto) {
+    public Customer addCustomer(CustomerDto customerDto) {
         Customer customer = new Customer();
-        customer.setName(customerChangeRequestDto.getName());
+        customer.setName(customerDto.getName());
+        return customerRepository.save(customer);
+    }
+
+    public Customer updateCustomer(Long id, CustomerDto customerDto) {
+        Customer customer = customerRepository.getById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+        customer.setName(customerDto.getName());
         return customerRepository.save(customer);
     }
 

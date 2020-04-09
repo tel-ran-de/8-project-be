@@ -57,7 +57,10 @@ public class CustomerController {
         return service.addCustomer(customer);
     }
 
-
+    @PutMapping("/api/customers/{id}")
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customer) {
+        return service.updateCustomer(id, customer);
+    }
 
     @PostMapping("/api/customers/{customerId}/shipments")
     public Shipment addShipment(@RequestBody ShipmentDTO shipmentDto, @PathVariable Long customerId) {
