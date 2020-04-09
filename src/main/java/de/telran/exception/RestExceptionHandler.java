@@ -1,7 +1,7 @@
 package de.telran.exception;
 
 
-import org.hibernate.exception.ConstraintViolationException;
+import de.telran.dto.CustomerErrorDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
-    protected ResponseEntity<Object> handleNotFound (Exception ex, WebRequest request){
-
-        return  handleExceptionInternal(ex,
-                ex.getMessage(),
+    protected ResponseEntity<Object> handleNotFound(CustomerNotFoundException e, WebRequest request) {
+        return handleExceptionInternal(
+                e,
+                new CustomerErrorDto(e.getCustomerId(), e.getMessage()),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND,
                 request);

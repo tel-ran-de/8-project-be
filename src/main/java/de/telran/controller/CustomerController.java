@@ -37,10 +37,9 @@ public class CustomerController {
 
     @GetMapping("/api/customers/{id}/shipments")
     public List<ShipmentDTO> getShipmentsByCustomerId(@PathVariable long id){
-
         return service.getShipmentsByCustomerId(id)
                 .stream()
-                .map(s -> convertShipmentToDTOShipment(s))
+                .map(this::convertShipmentToDTOShipment)
                 .collect(Collectors.toList());
     }
 

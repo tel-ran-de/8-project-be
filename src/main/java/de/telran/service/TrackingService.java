@@ -38,13 +38,18 @@ public class TrackingService {
 
 
     public Shipment addShipment(Long customerId, Shipment shipment) {
-        Customer customer = customerRepository.getById(customerId).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = customerRepository
+                .getById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
         shipment.setCustomer(customer);
         return shipmentRepository.save(shipment);
     }
 
     public List<Shipment> getShipmentsByCustomerId(Long customerId) {
-        Customer customer = customerRepository.getById(customerId).orElseThrow(CustomerNotFoundException::new);
+        customerRepository
+                .getById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
+
         return shipmentRepository.findAllShipmentsByCustomerId(customerId);
     }
 
