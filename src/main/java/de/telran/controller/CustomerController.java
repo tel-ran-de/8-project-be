@@ -22,14 +22,6 @@ public class CustomerController {
         this.modelMapper = modelMapper;
     }
 
-   /* @GetMapping("/api/customers")
-    List<CustomerDTO> getAllCustomersWithShipmentsAndTrackings() {
-        return service.getAllCustomers()
-                .stream()
-                .map(s -> modelMapper.map(s, CustomerDTO.class))
-                .collect(Collectors.toList());
-    }*/
-
     @GetMapping("/api/customers")
     public List<Customer> getAllCustomersWithShipmentsAndTrackings() {
         return service.getAllCustomers();

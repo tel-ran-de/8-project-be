@@ -51,10 +51,15 @@ public class TrackingService {
         return customerRepository.findAll();
     }
 
-
-
-
     public Tracking getCustomerByCustomerId(Long customerId) {
         return trackingRepository.getOne(customerId);
+    }
+
+    public List<Tracking> getAllTracking() {
+        return trackingRepository.findAll();
+    }
+
+    public List<Shipment> getAllShipment() {
+        return shipmentRepository.findAll();
     }
 }
