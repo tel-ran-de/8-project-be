@@ -31,15 +31,23 @@ public class TrackingService {
         this.trackingRepository = trackingRepository;
     }
 
-    public Customer addCustomer(CustomerDto customerChangeRequestDto) {
+    public Customer addCustomer(CustomerDto customerDto) {
         Customer customer = new Customer();
-        customer.setName(customerChangeRequestDto.getName());
+        customer.setName(customerDto.getName());
+        return customerRepository.save(customer);
+    }
+
+    public Customer updateCustomer(Long id, CustomerDto customerDto) {
+        Customer customer = customerRepository.getById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+        customer.setName(customerDto.getName());
         return customerRepository.save(customer);
     }
 
 
     public Shipment addShipment(Long customerId, Shipment shipment) {
-        Customer customer = customerRepository.getById(customerId).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = customerRepository
+                .getById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
         shipment.setCustomer(customer);
         return shipmentRepository.save(shipment);
     }
@@ -49,6 +57,17 @@ public class TrackingService {
 
         return trackings.stream().filter( tracking -> null != tracking.getShipmentId() && tracking.getShipmentId() == shipmentId ).collect(Collectors.toList());
     }
+
+    public List<Shipment> getShipmentsByCustomerId(Long customerId) {
+        customerRepository
+                .getById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
+
+        return shipmentRepository.findAllShipmentsByCustomerId(customerId);
+    }
+
+
+
     public Tracking addTracking(Tracking tracking) {
         return trackingRepository.save(tracking);
     }

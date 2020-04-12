@@ -5,11 +5,13 @@ import de.telran.dto.CustomerDto;
 import de.telran.dto.ShipmentDTO;
 import de.telran.entity.Customer;
 import de.telran.entity.Shipment;
+import de.telran.exception.CustomerNotFoundException;
 import de.telran.service.TrackingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class CustomerController {
@@ -32,9 +34,32 @@ public class CustomerController {
        return modelMapper.map(service.getCustomerByCustomerId(id), CustomerDto.class);
     }
 
+
+    @GetMapping("/api/customers/{id}/shipments")
+    public List<ShipmentDTO> getShipmentsByCustomerId(@PathVariable long id){
+        return service.getShipmentsByCustomerId(id)
+                .stream()
+                .map(this::convertShipmentToDTOShipment)
+                .collect(Collectors.toList());
+    }
+
+
+        private ShipmentDTO convertShipmentToDTOShipment(Shipment shipment) {
+        ShipmentDTO shipmentDto = new ShipmentDTO();
+        shipmentDto.setDescription((shipment.getDescription()));
+        shipmentDto.setId(shipment.getId());
+        return  shipmentDto;
+    }
+
+
     @PostMapping("/api/customers")
     public Customer addCustomer(@RequestBody CustomerDto customer) {
         return service.addCustomer(customer);
+    }
+
+    @PutMapping("/api/customers/{id}")
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customer) {
+        return service.updateCustomer(id, customer);
     }
 
     @PostMapping("/api/customers/{customerId}/shipments")
