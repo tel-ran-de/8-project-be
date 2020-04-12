@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ShipmentController {
@@ -27,9 +28,18 @@ public class ShipmentController {
     public List<Shipment> getAllTrackingWithShipmentsAndTrackings() {
         return service.getAllShipment();
     }
+
+    @GetMapping("/api/shipment/{id}")
+    public List<Tracking> getTrackingsById(@PathVariable("id") int shipmentId ) {
+        List<Tracking> trackingList = service.getTrackingsByShipmentId(shipmentId);
+
+        return trackingList;
+    }
+
     @PostMapping("/api/shipments/{id}/trackings")
     TrackingDTO addTracking(@RequestBody TrackingDTO tracking, @PathVariable long id) {
         Tracking trackingEntity = new Tracking(tracking.getTrackingId(), tracking.getStatus(), id);
+
         return modelMapper.map(service.addTracking(trackingEntity), TrackingDTO.class);
     }
 
