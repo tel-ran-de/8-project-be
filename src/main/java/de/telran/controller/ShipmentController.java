@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +40,9 @@ public class ShipmentController {
 
     @PostMapping("/api/shipments/{id}/trackings")
     TrackingDTO addTracking(@RequestBody TrackingDTO tracking, @PathVariable long id) {
-        Tracking trackingEntity = new Tracking(tracking.getTrackingId(), tracking.getStatus(), id);
+
+        Date date = new Date();
+        Tracking trackingEntity = new Tracking(tracking.getTrackingId(), tracking.getStatus(), id, date);
 
         return modelMapper.map(service.addTracking(trackingEntity), TrackingDTO.class);
     }
