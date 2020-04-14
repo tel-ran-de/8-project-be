@@ -37,8 +37,8 @@ public class ShipmentControllerTest {
 
     @Test
     public void testAddTracking() throws Exception {
-        Tracking trackingEntity = new Tracking(null, "delivered", 2L);
-        Tracking savedTrackingEntity = new Tracking(1L, "delivered", 2L);
+        Tracking trackingEntity = new Tracking(null, "delivered", 2L,null);
+        Tracking savedTrackingEntity = new Tracking(1L, "delivered", 2L,null);
         when(service.addTracking(trackingEntity)).thenReturn(savedTrackingEntity);
 
         mvc.perform(post("/api/shipments/2/trackings")

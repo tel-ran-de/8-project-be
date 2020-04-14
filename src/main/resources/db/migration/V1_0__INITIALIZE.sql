@@ -23,6 +23,7 @@ CREATE TABLE tracking
     id SMALLINT UNSIGNED                                                   NOT NULL AUTO_INCREMENT,
     status      ENUM ('initiated','in progress','delivered','cancelled','returned') NOT NULL,
     shipment_id SMALLINT UNSIGNED,
+    event_date datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (shipment_id) REFERENCES shipment (id) ON DELETE CASCADE
 ) ENGINE = InnoDB
@@ -47,11 +48,11 @@ VALUES (1, 'TP-Link AC1350 Powerline Adapter', 1),
        (6, 'BiC Kids Tropicolors Colouring Pencils (Pack of 24)', 6),
        (7, 'Panasonic KX-TS520GB', 7);
 
-INSERT INTO tracking(id, status, shipment_id)
-VALUES (1, 'initiated', 2),
-       (2, 'cancelled', 4),
-       (3, 'delivered', 1),
-       (4, 'in progress', 3),
-       (5, 'cancelled', 7),
-       (6, 'delivered', 5),
-       (7, 'in progress', 6);
+INSERT INTO tracking(id, status, shipment_id, event_date)
+VALUES (1, 'initiated', 2, CURRENT_TIMESTAMP),
+       (2, 'cancelled', 4, CURRENT_TIMESTAMP),
+       (3, 'delivered', 1, CURRENT_TIMESTAMP),
+       (4, 'in progress', 3,CURRENT_TIMESTAMP),
+       (5, 'cancelled', 7, CURRENT_TIMESTAMP),
+       (6, 'delivered', 5, CURRENT_TIMESTAMP),
+       (7, 'in progress', 6, CURRENT_TIMESTAMP);

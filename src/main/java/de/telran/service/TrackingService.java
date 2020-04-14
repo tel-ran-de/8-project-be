@@ -1,6 +1,7 @@
 package de.telran.service;
 
 import de.telran.dto.CustomerDto;
+import de.telran.dto.TrackingDTO;
 import de.telran.entity.Customer;
 import de.telran.entity.Shipment;
 import de.telran.entity.Tracking;
@@ -11,7 +12,10 @@ import de.telran.repositiory.TrackingRepositiory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrackingService {
@@ -51,6 +55,12 @@ public class TrackingService {
         return shipmentRepository.save(shipment);
     }
 
+    public List<Tracking> getTrackingsByShipmentId(int shipmentId ) {
+        List<Tracking> trackings = trackingRepository.findAll();
+
+        return trackings.stream().filter( tracking -> null != tracking.getShipmentId() && tracking.getShipmentId() == shipmentId ).collect(Collectors.toList());
+    }
+
     public List<Shipment> getShipmentsByCustomerId(Long customerId) {
         customerRepository
                 .getById(customerId)
@@ -60,7 +70,10 @@ public class TrackingService {
     }
 
 
+
     public Tracking addTracking(Tracking tracking) {
+
+
         return trackingRepository.save(tracking);
     }
 
@@ -68,10 +81,15 @@ public class TrackingService {
         return customerRepository.findAll();
     }
 
-
-
-
     public Tracking getCustomerByCustomerId(Long customerId) {
         return trackingRepository.getOne(customerId);
+    }
+
+    public List<Tracking> getAllTracking() {
+        return trackingRepository.findAll();
+    }
+
+    public List<Shipment> getAllShipment() {
+        return shipmentRepository.findAll();
     }
 }

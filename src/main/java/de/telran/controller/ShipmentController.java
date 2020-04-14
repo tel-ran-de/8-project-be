@@ -1,11 +1,17 @@
 package de.telran.controller;
 
 import de.telran.dto.TrackingDTO;
+import de.telran.entity.Shipment;
 import de.telran.entity.Tracking;
 import de.telran.service.TrackingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ShipmentController {
@@ -20,15 +26,25 @@ public class ShipmentController {
         this.modelMapper = modelMapper;
     }
 
+    @GetMapping("/api/shipment")
+    public List<Shipment> getAllTrackingWithShipmentsAndTrackings() {
+        return service.getAllShipment();
+    }
+
+    @GetMapping("/api/shipment/{id}")
+    public List<Tracking> getTrackingsById(@PathVariable("id") int shipmentId ) {
+        List<Tracking> trackingList = service.getTrackingsByShipmentId(shipmentId);
+
+        return trackingList;
+    }
 
     @PostMapping("/api/shipments/{id}/trackings")
     TrackingDTO addTracking(@RequestBody TrackingDTO tracking, @PathVariable long id) {
-        Tracking trackingEntity = new Tracking(tracking.getTrackingId(), tracking.getStatus(), id);
+
+        Date date = new Date();
+        Tracking trackingEntity = new Tracking(tracking.getTrackingId(), tracking.getStatus(), id, date);
+
         return modelMapper.map(service.addTracking(trackingEntity), TrackingDTO.class);
     }
 
-   /* @GetMapping("/api/shipments/{id}/trackings")
-    TrackingDTO getTrackingByShipmentId(@PathVariable long id) {
-        return modelMapper.map(service.getTrackingByShipmentId(id), TrackingDTO.class);
-    }*/
 }
