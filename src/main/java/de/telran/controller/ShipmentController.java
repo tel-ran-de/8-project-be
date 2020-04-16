@@ -1,5 +1,6 @@
 package de.telran.controller;
 
+import de.telran.dto.ShipmentNameDTO;
 import de.telran.dto.TrackingDTO;
 import de.telran.entity.Shipment;
 import de.telran.entity.Tracking;
@@ -37,12 +38,16 @@ public class ShipmentController {
 
         return trackingList;
     }
+    @GetMapping("/api/shipments/{shipmentId}")
+    public ShipmentNameDTO getCustomerNameByShipmentId(@PathVariable long shipmentId){
+        return service.getCustomerByShipmentId(shipmentId);
+    }
 
     @PostMapping("/api/shipments/{id}/trackings")
     TrackingDTO addTracking(@RequestBody TrackingDTO tracking, @PathVariable long id) {
 
         Date date = new Date();
-        Tracking trackingEntity = new Tracking(tracking.getTrackingId(), tracking.getStatus(), id, date);
+        Tracking trackingEntity = new Tracking(tracking.getTrackingId(),tracking.getStatus(), id, date);
 
         return modelMapper.map(service.addTracking(trackingEntity), TrackingDTO.class);
     }
