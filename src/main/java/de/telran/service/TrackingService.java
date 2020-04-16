@@ -1,6 +1,7 @@
 package de.telran.service;
 
 import de.telran.dto.CustomerDto;
+import de.telran.dto.ShipmentNameDTO;
 import de.telran.dto.TrackingDTO;
 import de.telran.entity.Customer;
 import de.telran.entity.Shipment;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,6 +69,16 @@ public class TrackingService {
                 .orElseThrow(() -> new CustomerNotFoundException(customerId));
 
         return shipmentRepository.findAllShipmentsByCustomerId(customerId);
+    }
+
+    public ShipmentNameDTO getCustomerByShipmentId(long shipmentId){
+        Shipment shipment = shipmentRepository.getOne(shipmentId);
+        long customerId =shipment.getCustomer().getId();
+        Optional<Customer> customer = customerRepository.getById(customerId);
+        customer.orElseThrow(()->new CustomerNotFoundException(customerId));
+       return new ShipmentNameDTO(customer.get().getName(),shipment.getDescription());
+
+
     }
 
 
