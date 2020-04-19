@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Service
 public class TrackingService {
 
-
     private CustomerRepository customerRepository;
     private ShipmentRepository shipmentRepository;
     private TrackingRepositiory trackingRepository;
@@ -48,7 +47,6 @@ public class TrackingService {
         return customerRepository.save(customer);
     }
 
-
     public Shipment addShipment(Long customerId, Shipment shipment) {
         Customer customer = customerRepository
                 .getById(customerId)
@@ -64,10 +62,6 @@ public class TrackingService {
     }
 
     public List<Shipment> getShipmentsByCustomerId(Long customerId) {
-        customerRepository
-                .getById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException(customerId));
-
         return shipmentRepository.findAllShipmentsByCustomerId(customerId);
     }
 
@@ -77,15 +71,9 @@ public class TrackingService {
         Optional<Customer> customer = customerRepository.getById(customerId);
         customer.orElseThrow(()->new CustomerNotFoundException(customerId));
        return new ShipmentNameDTO(customer.get().getName(),shipment.getDescription());
-
-
     }
 
-
-
     public Tracking addTracking(Tracking tracking) {
-
-
         return trackingRepository.save(tracking);
     }
 
@@ -93,8 +81,8 @@ public class TrackingService {
         return customerRepository.findAll();
     }
 
-    public Tracking getCustomerByCustomerId(Long customerId) {
-        return trackingRepository.getOne(customerId);
+    public Customer getCustomerByCustomerId(Long customerId) {
+        return customerRepository.getOne(customerId);
     }
 
     public List<Tracking> getAllTracking() {
